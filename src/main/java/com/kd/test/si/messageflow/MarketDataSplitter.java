@@ -1,4 +1,4 @@
-package com.kd.test.si.router;
+package com.kd.test.si.messageflow;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.kd.test.messageflow.domain.Field;
 import com.kd.test.messageflow.domain.FieldDescriptor;
+import com.kd.test.si.router.MarketItem;
 
 @Component
 public class MarketDataSplitter {

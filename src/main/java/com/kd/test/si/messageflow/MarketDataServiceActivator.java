@@ -1,4 +1,4 @@
-package com.kd.test.si.router;
+package com.kd.test.si.messageflow;
 
 import java.text.MessageFormat;
 import java.util.Map;
