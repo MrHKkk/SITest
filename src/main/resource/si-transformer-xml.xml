@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:int-xml="http://www.springframework.org/schema/integration/xml"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/integration
+			http://www.springframework.org/schema/integration/spring-integration.xsd
+			http://www.springframework.org/schema/integration/xml
+			http://www.springframework.org/schema/integration/xml/spring-integration-xml.xsd
+			http://www.springframework.org/schema/util
+			http://www.springframework.org/schema/util/spring-util.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd   ">
+
+	<context:component-scan base-package="com.kd.test"></context:component-scan>
+
+	<int-xml:marshalling-transformer
+		marshaller="marshaller" input-channel="input" output-channel="xml"
+		result-type="StringResult" />
+
+	<int-xml:unmarshalling-transformer
+		unmarshaller="marshaller" id="defaultUnmarshaller" input-channel="input"
+		output-channel="xml" />
+
+	<int:object-to-string-transformer
+		input-channel="xml" output-channel="xml-string"></int:object-to-string-transformer>
+	
+	<int:service-activator ref="xmlConsumer" method="consume" input-channel="xml-string" ></int:service-activator>
+	
+	<int:logging-channel-adapter id="logger"
+		log-full-message="true" level="INFO" />
+		
+	<int:channel id="input" />
+	<int:channel id="xml-string" />
+	<int:channel id="xml">
+		<int:interceptors>
+			<int:wire-tap channel="logger" />
+		</int:interceptors>
+	</int:channel>
+	<int:channel id="output">
+		<int:queue capacity="10" />
+	</int:channel>
+</beans>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans       
+	http://www.springframework.org/schema/beans/spring-beans.xsd      
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd       
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd       
+	http://www.springframework.org/schema/integration       
+	http://www.springframework.org/schema/integration/spring-integration.xsd">
+	
+	<context:annotation-config />
+	<context:component-scan base-package="com.kd.test"></context:component-scan>
+	
+	<int:channel id="trade-in-channel"></int:channel>
+	<int:channel id="trade-out-channel" ></int:channel>
+	
+	<int:gateway id="tradeGateway" default-reply-channel="trade-out-channel"
+		default-request-channel="trade-in-channel"
+		service-interface="com.kd.test.si.gateway.ITradeGateway" />
+	
+	<int:service-activator input-channel="trade-in-channel" output-channel="trade-out-channel"
+		ref="tradeProcessor" method="receiveTrade">
+	
+	</int:service-activator>
+	
+</beans>
